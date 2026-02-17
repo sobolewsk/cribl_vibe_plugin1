@@ -16,14 +16,10 @@ if (fs.existsSync(workDir)) {
 }
 fs.mkdirSync(workDir, { recursive: true });
 
-// Create the package structure
-const packageDir = path.join(workDir, 'package');
-fs.mkdirSync(packageDir, { recursive: true });
-
 // Copy package.json
 const packageJson = JSON.parse(fs.readFileSync(path.join(rootDir, 'package.json'), 'utf-8'));
 fs.writeFileSync(
-  path.join(packageDir, 'package.json'),
+  path.join(workDir, 'package.json'),
   JSON.stringify({
     name: packageJson.name,
     version: packageJson.version,
@@ -32,14 +28,14 @@ fs.writeFileSync(
 );
 
 // Create static directory with dist contents
-const staticDir = path.join(packageDir, 'static');
+const staticDir = path.join(workDir, 'static');
 if (fs.existsSync(distDir)) {
   fs.cpSync(distDir, staticDir, { recursive: true });
   console.log('✓ Copied dist to static/');
 }
 
 // Create default directory with config contents
-const defaultDir = path.join(packageDir, 'default');
+const defaultDir = path.join(workDir, 'default');
 if (fs.existsSync(configDir)) {
   fs.cpSync(configDir, defaultDir, { recursive: true });
   console.log('✓ Copied config to default/');
@@ -50,7 +46,7 @@ if (fs.existsSync(configDir)) {
 // Create tgz file
 const outputFile = path.join(rootDir, `${packageJson.name}-${packageJson.version}.tgz`);
 try {
-  execSync(`cd ${workDir} && tar -czf "${outputFile}" package/`, { stdio: 'inherit' });
+  execSync(`cd ${workDir} && tar -czf "${outputFile}" .`, { stdio: 'inherit' });
   console.log(`✓ Created ${path.basename(outputFile)}`);
 } catch (error) {
   console.error('Failed to create tar file:', error.message);
