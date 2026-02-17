@@ -12,6 +12,7 @@
     "pack": "npm run build && node scripts/pack.js"
   },
   "dependencies": {
+    "@monaco-editor/loader": "^1.7.0",
     "@monaco-editor/react": "^4.7.0",
     "ag-grid-community": "^35.1.0",
     "ag-grid-react": "^35.1.0",

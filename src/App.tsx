@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { loader } from '@monaco-editor/react';
 import Editor from '@monaco-editor/react';
 import { AgGridReact } from 'ag-grid-react';
 import 'ag-grid-community/styles/ag-grid.css';
@@ -11,6 +12,13 @@ import {
 } from './services/searchService';
 import './App.css';
 
+// Configure Monaco to use bundled version
+loader.config({
+  paths: {
+    vs: './monaco-editor/vs',
+  },
+});
+
 interface SearchState {
   loading: boolean;
   error: string | null;
@@ -20,7 +28,7 @@ interface SearchState {
 }
 
 export const App: React.FC = () => {
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState('dataset="cribl_internal_logs" | limit 1000');
   const [earliest, setEarliest] = useState(
     new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString().slice(0, 16)
   );
